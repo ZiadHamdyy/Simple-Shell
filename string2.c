@@ -1,4 +1,4 @@
-#include "main.h"
+/*#include "main.h"*/
 /**
  * _strcmp - compares two strings.
  * @s1:the first string.
@@ -8,7 +8,7 @@
  * string return a number greater then 0.
  * else return number less then 0.
  */
-int _strcmp(char *s1, char *s2)
+/*int _strcmp(char *s1, char *s2)
 {
 	while (*s1 != '\0' && *s2 != '\0')
 	{
@@ -18,5 +18,4 @@ int _strcmp(char *s1, char *s2)
 		s2++;
 	}
 	return (*s1 - *s2);
-}
-
+}*/

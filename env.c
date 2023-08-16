@@ -1,9 +1,9 @@
 #include "main.h"
 /**
  */
-void _path(char **env)
+void _env(char **env)
 {
 	int i = 0;
 	while (env[i] != NULL)
-		printf("%s", env[i++]);
+		printf("%s\n", env[i++]);
 }
