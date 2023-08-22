@@ -1,21 +1,16 @@
 #include "main.h"
+#include "global.h"
 /**
  */
 int main(__attribute__((unused)) int ac, __attribute__((unused)) char **av,
 		char **env)
 {
-	char *command;
+	char *command = NULL, *path, **array_path, **concat_ = NULL;
 	size_t n = 100;
 	ssize_t read_size;
-	char *args[32];
-	char *token;
-	int arg_count = 0;
-	char *path;
-	char **array_path;
-	char **concat_;
 
 	d.env = env;
-	path = _path(d.env);	
+	path = _path(d.env);
 	array_path = _array_path(path);
 	signal(SIGINT, sigint_handler);
 	command = (char *)malloc(sizeof(char) * n);
@@ -23,7 +18,6 @@ int main(__attribute__((unused)) int ac, __attribute__((unused)) char **av,
 		return (1);
 	while (1)
 	{
-		arg_count = 0;
 		if (isatty(0))
 			write(1, "$ ", 2);
 		read_size = getline(&command, &n, stdin);
@@ -42,35 +36,33 @@ int main(__attribute__((unused)) int ac, __attribute__((unused)) char **av,
 			command[read_size - 1] = '\0';
 		if (just_spaces(command))
 			continue;
-
-		token = strtok(command, " ");
-		while (token != NULL && arg_count < 32)
-		{
-			args[arg_count] = token;
-			token = strtok(NULL, " ");
-			arg_count++;
-		}
-		args[arg_count] = NULL;
-		if (my_command(args))
-			continue;
-		concat_ = concat_command(array_path, args[0]);
 		d.path = path;
 		d.array_path = array_path;
-		d.concated_array = concat_;
 		d.command = command;
-		_exec(concat_, args);
-		free_2darr(concat_);
+		_exec(concat_, command);
 	}
 	free(command);
 	free(path);
 	free(array_path);
 	return (0);
 }
-void _exec(char **concat_, char **command)
+void _exec(char **concat_, char *line)
 {
-	int i = 0;
+	int i = 0, arg_count = 0;
 	pid_t pid;
+	char *token, *command[32];
 
+	token = strtok(line, " ");
+	while (token != NULL && arg_count < 32)
+	{
+		command[arg_count++] = token;
+		token = strtok(NULL, " ");
+	}
+	command[arg_count] = NULL;
+	if (my_command(command))
+		return;
+	concat_ = concat_command(d.array_path, command[0]);
+	d.concated_array = concat_;
 	while (concat_[i])
 	{
 		if (access(concat_[i], X_OK) != 0)
@@ -79,12 +71,7 @@ void _exec(char **concat_, char **command)
 			continue;
 		}
 		pid = fork();
-		if (pid < 0)
-		{
-			perror("Fork error");
-			continue;
-		}
-		else if (pid == 0)
+		if (pid == 0)
 		{
 			if (execve(concat_[i], command, d.env) == -1)
 				exit(1);
@@ -93,11 +80,13 @@ void _exec(char **concat_, char **command)
 		{
 			wait(NULL);
 			d.error = 0;
+			free_2darr(concat_);
 			return;
 		}
 	}
 	perror("Command not found");
 	d.error = 1;
+	free_2darr(concat_);
 }
 int just_spaces(char *command)
 {

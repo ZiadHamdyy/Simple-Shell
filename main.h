@@ -22,7 +22,6 @@ typedef struct data_s
 	int error;
 } Data;
 extern Data d;
-Data d = {1, NULL, NULL, NULL, NULL, NULL, NULL, 0};
 int _strlen(char *s);
 char *_strcpy(char *dest, char *src);
 int _strcmp(char *s1, char *s2);
@@ -35,7 +34,7 @@ char **_array_path(char *path);
 char **concat_command(char **array_path, char *command);
 int my_command(char **args);
 int just_spaces(char *command);
-void _exec(char **concat_, char **command);
+void _exec(char **concat_, char *line);
 void __exit(char *value);
 void free_all();
 void sigint_handler(int signal);
