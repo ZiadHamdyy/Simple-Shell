@@ -1,21 +1,22 @@
 #include "main.h"
-Data d = {1, NULL, NULL, NULL, NULL, NULL,NULL, 0};
 /**
  */
-int main(int ac, char **av, char **env)
+int main(__attribute__((unused)) int ac, __attribute__((unused)) char **av,
+		char **env)
 {
 	char *command;
 	size_t n = 100;
 	ssize_t read_size;
-	pid_t pid;
 	char *args[32];
 	char *token;
-	int arg_count = 0, i = 0;
-	d.env = env;
-	char *path = _path(d.env);
-	char **array_path = _array_path(path);
+	int arg_count = 0;
+	char *path;
+	char **array_path;
 	char **concat_;
-	
+
+	d.env = env;
+	path = _path(d.env);	
+	array_path = _array_path(path);
 	signal(SIGINT, sigint_handler);
 	command = (char *)malloc(sizeof(char) * n);
 	if (command == NULL)
@@ -50,7 +51,6 @@ int main(int ac, char **av, char **env)
 			arg_count++;
 		}
 		args[arg_count] = NULL;
-		
 		if (my_command(args))
 			continue;
 		concat_ = concat_command(array_path, args[0]);
@@ -69,6 +69,8 @@ int main(int ac, char **av, char **env)
 void _exec(char **concat_, char **command)
 {
 	int i = 0;
+	pid_t pid;
+
 	while (concat_[i])
 	{
 		if (access(concat_[i], X_OK) != 0)
@@ -76,7 +78,7 @@ void _exec(char **concat_, char **command)
 			i++;
 			continue;
 		}
-		pid_t pid = fork();
+		pid = fork();
 		if (pid < 0)
 		{
 			perror("Fork error");
@@ -85,10 +87,7 @@ void _exec(char **concat_, char **command)
 		else if (pid == 0)
 		{
 			if (execve(concat_[i], command, d.env) == -1)
-			{
-				
 				exit(1);
-			}
 		}
 		else
 		{
@@ -97,13 +96,14 @@ void _exec(char **concat_, char **command)
 			return;
 		}
 	}
-	/* command not found */
 	perror("Command not found");
 	d.error = 1;
 }
 int just_spaces(char *command)
 {
-	for (size_t i = 0; i < strlen(command); i++)
+	size_t i;
+
+	for (i = 0; i < strlen(command); i++)
 	{
 		if (command[i] != ' ')
 		{

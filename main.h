@@ -22,6 +22,7 @@ typedef struct data_s
 	int error;
 } Data;
 extern Data d;
+Data d = {1, NULL, NULL, NULL, NULL, NULL, NULL, 0};
 int _strlen(char *s);
 char *_strcpy(char *dest, char *src);
 int _strcmp(char *s1, char *s2);
