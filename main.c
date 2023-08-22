@@ -1,5 +1,5 @@
 #include "main.h"
-Data d = {NULL, NULL, NULL, NULL,NULL, 0};
+Data d = {1, NULL, NULL, NULL, NULL, NULL,NULL, 0};
 /**
  */
 int main(int ac, char **av, char **env)
@@ -15,32 +15,27 @@ int main(int ac, char **av, char **env)
 	char *path = _path(d.env);
 	char **array_path = _array_path(path);
 	char **concat_;
-
-
+	
+	signal(SIGINT, sigint_handler);
 	command = (char *)malloc(sizeof(char) * n);
-
 	if (command == NULL)
-	{
-		perror("Memory allocation error");
 		return (1);
-	}
 	while (1)
 	{
 		arg_count = 0;
-		printf("$ ");
+		if (isatty(0))
+			write(1, "$ ", 2);
 		read_size = getline(&command, &n, stdin);
 		if (read_size == -1)
 		{
 			if (feof(stdin))
 			{
-				printf("\n");
+				if (isatty(0))
+					write(1, "\n", 1);
 				break;
 			}
 			else
-			{
-				perror("Error reading input");
 				continue;
-			}
 		}
 		if (command[read_size - 1] == '\n')
 			command[read_size - 1] = '\0';
@@ -64,22 +59,6 @@ int main(int ac, char **av, char **env)
 		d.concated_array = concat_;
 		d.command = command;
 		_exec(concat_, args);
-		/*pid_t pid = fork();
-		if (pid < 0)
-		{
-			perror("Fork error");
-			continue;
-		}
-		else if (pid == 0)
-		{
-			if (execve(args[0], args, env) == -1)
-			{
-				perror("Command not found");
-				exit(1);
-			}
-		}
-		else
-			wait(NULL);*/
 		free_2darr(concat_);
 	}
 	free(command);

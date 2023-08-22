@@ -24,8 +24,8 @@ void free_all()
 		free(d.path);
 	//if (d.concated_array[0])
 		//free(d.concated_array[0]);
-	if (d.concated_array)
-		free(d.concated_array);
+	//if (d.concated_array)
+		//free(d.concated_array);
 	if (d.command)
 		free(d.command);
 	if (d.array_path)
