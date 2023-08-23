@@ -6,7 +6,7 @@
 */
 int my_command(char **args)
 {
-	int value = args[1] ? atoi(args[1]) : 2;
+	int value = args[1] ? atoi(args[1]) : d.error;
 
 	if (strcmp(args[0], "exit") == 0)
 	{
