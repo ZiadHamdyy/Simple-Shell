@@ -6,10 +6,12 @@
 */
 int my_command(char **args)
 {
+	int value = args[1] ? atoi(args[1]) : 2;
+
 	if (strcmp(args[0], "exit") == 0)
 	{
 		free_all();
-		__exit(args[1]);
+		__exit(value);
 		return (1);
 	}
 	else if (strcmp(args[0], "env") == 0)

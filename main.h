@@ -45,7 +45,7 @@ char **concat_command(char **array_path, char *command);
 int my_command(char **args);
 int just_spaces(char *command);
 void _exec(char **concat_, char *line);
-void __exit(char *value);
+void __exit(int value);
 void free_all(void);
 void sigint_handler(int signal);
 #endif

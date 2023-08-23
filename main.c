@@ -96,7 +96,7 @@ void _exec(char **concat_, char *line)
 		}
 	}
 	perror("Command not found");
-	d.error = 1;
+	d.error = 2;
 	free_2darr(concat_);
 }
 /**
@@ -122,9 +122,7 @@ int just_spaces(char *command)
  * @value:string.
  * Return:void.
  */
-void __exit(char *value)
+void __exit(int value)
 {
-	if (!value)
-		exit(d.error);
-	exit(atoi(value));
+	exit(value);
 }
