@@ -9,7 +9,17 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <signal.h>
-
+/**
+ * struct data_s - struct for global variables.
+ * @ac:argc.
+ * @av:argv.
+ * @env:the enviroment.
+ * @path:a string.
+ * @array_path:array of strings.
+ * @concated_array:array of string.
+ * @command:string.
+ * @error:error.
+ */
 typedef struct data_s
 {
 	int ac;
@@ -36,6 +46,6 @@ int my_command(char **args);
 int just_spaces(char *command);
 void _exec(char **concat_, char *line);
 void __exit(char *value);
-void free_all();
+void free_all(void);
 void sigint_handler(int signal);
 #endif

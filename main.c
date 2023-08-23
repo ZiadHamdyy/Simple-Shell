@@ -1,6 +1,11 @@
 #include "main.h"
 #include "global.h"
 /**
+ * main - ........
+ * @ac:argc.
+ * @av:argv.
+ * @env:the enviroment.
+ * Return:0.
  */
 int main(__attribute__((unused)) int ac, __attribute__((unused)) char **av,
 		char **env)
@@ -46,6 +51,12 @@ int main(__attribute__((unused)) int ac, __attribute__((unused)) char **av,
 	free(array_path);
 	return (0);
 }
+/**
+ * _exec - ...........
+ * @concat_:array of string.
+ * @line:string.
+ * Return:void.
+ */
 void _exec(char **concat_, char *line)
 {
 	int i = 0, arg_count = 0;
@@ -88,6 +99,11 @@ void _exec(char **concat_, char *line)
 	d.error = 1;
 	free_2darr(concat_);
 }
+/**
+ * just_spaces - ............
+ * @command:the command.
+ * Return:0 or 1.
+ */
 int just_spaces(char *command)
 {
 	size_t i;
@@ -101,6 +117,11 @@ int just_spaces(char *command)
 	}
 	return (1);
 }
+/**
+ * __exit - .........
+ * @value:string.
+ * Return:void.
+ */
 void __exit(char *value)
 {
 	if (!value)
